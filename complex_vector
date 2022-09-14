@@ -1,0 +1,161 @@
+#Jose Samuel Mahecha Alarcon
+#Se reciben dos vectores a y b, la funcion retornara la operacion entre vectores a+b. Ambos vectores deben de ser
+    de igual dimension o no se podra realizar la operacion.
+def Sumvectors(a, b):
+r = [(0, 0)] * len(a)
+    for k in range(len(a)):
+        r[k] = suma(a[k], b[k])
+    return r
+    
+#La funcion inverseA recibe un vector complejo, y despues retornara el inverso aditivo del vector ingresado.
+def inverseA(a):
+    r = [(0, 0)] * len(a)
+    for k in range(len(a)):
+        r[k] = multiplicacion((-1, 0), v[k])
+
+#La funcion exv recibe un escalar complejo b y un vector complejo a. La funcion retornara el resultado de multiplicar el escalar por el vector.
+def exv(a, b):
+    r = [(0, 0)] * len(b)
+    for k in range(len(b)):
+        r[k] = multiplicacion(a, b[k])
+
+# La funcion sumM recibe dos matrices de igual dimension a y b. Que retornara una matriz que refleja la operacion de haber sumado las dos matrices de
+    igual dimension
+def sumM(a, b):
+    fila = [(0, 0)] * len(a[0])
+    r = [fila] * len(a)
+    for j in range(len(a)):
+        fila = [(0, 0)] * len(a[0])
+        r[j] = fila
+        for k in range(len(a[0])):
+            r[j][k] = suma(a[j][k], b[j][k])
+    return r
+
+# Esta funcion recibe una matriz a y devuelve el inverso aditivo de dicha funcion
+def inversaA(a):
+    fila = [(0, 0)] * len(a[0])
+    r = [fila] * len(a)
+    for j in range(len(a)):
+        fila = [(0, 0)] * len(a[0])
+        r[j] = fila
+        for k in range(len(a[0])):
+            r[j][k] = multiplicacion((-1, 0), a[j][k])
+    return r
+
+# La funcion recibe un escalar complejo b  y una matriz compleja a y retorna la operacion de multiplicar el escalar por la matriz. 
+ def MultEscalarMatriz(a, b):
+    fila = [(0, 0)] * len(b[0])
+    r = [fila] * len(b)
+    for j in range(len(b)):
+        fila = [(0, 0)] * len(b[0])
+        r[j] = fila
+        for k in range(len(A[0])):
+            r[j][k] = multiplicacion(a, b[j][k])
+    return r
+
+# La funcion transpuestaM recibe una matriz o un vector a y retorna la transpuesta de la matriz o vector.
+def transpuestaM(a):
+    fila = len(a)
+    columna = len(a[0])
+    trans = [[None for column in range(fila)] for row in range(columna)]
+    for i in range(fila):
+        for j in range(columna):
+            trans[j][i] = a[i][j]
+    return trans
+    
+# La funcion conjugadaV recibe una matriz o un vector a y retorna la transpuesta de la matriz o vector.
+def conjugadaV(a):
+   fila = [(0, 0)] * len(a[0])
+   r = [fila] * len(a)
+   for j in range(len(a)):
+       fila = [(0, 0)] * len(a[0])
+       r[j] = fila
+       for k in range(len(a[0])):
+           r[j][k] = conjugado(a[j][k])
+   return r
+
+# La funcion adjunta recibe un vector o matriz a; acontinuacion retorna una matriz o
+    vector que representa la adjunta de dicha matriz o vector.    
+def adjunta(a): 
+    conj = a[:]
+    newConj = conjugado_Matriz_Vector(conj)
+    trans = transpuesta_Matriz_Vector(newConj)
+    return trans
+ 
+# La funcion productMatriz recibe dos matrices a y b que deben de ser de tamaños compatibles y retorna el producto entre ambas matrices.
+def productMatriz(a, b):    
+    c = []
+    for i in range(len(a)):
+        c.append([])
+        for j in range(len(b[0])):
+            c[i].append((0, 0))
+            for k in range(len(a[0])):
+                c[i][j] = suma(c[i][j],  multiplicacion(a[i][k], b[k][j]))
+    return c
+
+# La funcion AccionMatV recibe una matriz a y un vector b y retorna el producto entre la matriz por el vector (se usa la funcion anterior).  
+def AccionMatV(a, b):
+    return productMatriz(a, b)
+
+# La funcion ProductoInterno recibe dos vectores a y b y retorna el producto interno entre ambos vectores (se usan funciones anteriores).
+def ProductoInterno(a, b):
+    return productMatrix(adjunta(a), b)[0][0]
+
+# La funcion normaVector recibe un vector a. Retorna un real que sera la norma del vector.
+def normaVector(a):
+    fila = len(a)
+    columna = len(a[0])
+    rta = 0
+    for i in range(fila):
+        for j in range(columna):
+            rta += a[i][j][0]**2+a[i][j][1]**2
+
+    return math.sqrt(rta)
+
+# La funcion distanciaVector recibe dos vectores a y b. Retorna un real que sera la distancia entre ambos vectores.
+def distanciaV(c, d):
+    if ProductoInterno(SustracMatriz(c, d), SustracMatriz(c, d))[1] == 0:
+        return math.sqrt(ProductoInterno(SustracMatriz(c, d), SustracMatriz(c, d))[0])
+    else:
+        a = cartesiantopolar(ProductoInterno(
+            SustracMatriz(c, d), SustracMatriz(c, d)))
+        return (math.sqrt(a[0]), 0.5 * a[1])
+     
+# La funcion matrizUnitaria recibe como parametro una matriz a. Retorna un booleano(True/False) para saber si es unitaria o no.
+def matrizUnitaria(a): 
+    daga = adjunta(a)
+    operacion = productMatriz(a,daga)
+
+    fila = len(a)
+    columna = len(a[0])
+
+    identidad = [[[1,0] if x==y else [0,0] for y in range(columna)] for x in range(fila)]
+
+    for i in range(fila):
+        for j in range(columna):
+            operacion[i][j] = [round(operacion[i][j][0]),round(operacion[i][j][1])]
+
+    if operacion==identidad:
+        return True
+    else:
+        return False
+  
+# La funcion Hermitiana recibe una matriz a y retorna si es hermitiana o no.
+def Hermitiana(a):
+    Adjunta = adjunta(a)
+    if Adjunta == a:
+        return "Hermitiana"
+    else:
+        return "No es hermitiana"
+        
+#La funcion productoTensorial recibe dos vectores o matrices a y b, donde a sera la estructura y b sera el sello. 
+Retornara el producto tensorial entre ambos vectores o matrices.
+def productoTensorial(a,b):
+    filaM1,filaM2 = len(a),len(b)
+    columnaM1,columnaM2 = len(a[0]),len(b[0])
+    nuevaMatriz = [[[0,0] for column in range(columnaM1*columnaM2)] for row in range(filaM1*filaM2)]
+    for i in range(len(nuevaMatriz)):
+        for j in range(len(nuevaMatriz[0])):
+            nuevaMatriz[i][j] = lab1.producto(a[i//filaM2][j//columnaM2],b[i%filaM2][j%columnaM2])
+
+    return nuevaMatriz
